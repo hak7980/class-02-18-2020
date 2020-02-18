@@ -47,3 +47,5 @@ x1 <- x %>%
   slice(1:5) %>% pull(course_department)
 
 ```
+
+The five courses with the top enrollment are: `r x1`
