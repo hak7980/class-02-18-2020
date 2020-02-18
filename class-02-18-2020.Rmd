@@ -9,22 +9,41 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## R Markdown
+#### Class 02/18/2020
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+```{r set-up, include=F}
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+library(tidycensus)
 
-```{r cars}
-summary(cars)
+library(readxl)
+
+library(tidyverse)
+
+library(janitor)
+
+x <- read_excel(
+                  
+                "class_enrollment_summary_by_term2.18.20.xlsx",
+                
+                skip = 3) %>% 
+  
+            clean_names() %>% 
+            
+            filter(! is.na(course_name))
+
 ```
 
-## Including Plots
 
-You can also embed plots, for example:
+```{r top 5 departments, include=F}
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+x1 <- x %>%
+  
+  group_by(course_department) %>%
+  
+  summarize(total = sum(u_grad)) %>%
+  
+  arrange(desc(total)) %>%
+  
+  slice(1:5) %>% pull(course_department)
+
 ```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
